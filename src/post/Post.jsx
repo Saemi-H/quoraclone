@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './Post.css'
 import {  Avatar, Input } from '@material-ui/core';
 import {  ArrowDownwardOutlined, ArrowUpwardOutlined, ChatBubbleOutlined, MoreHorizOutlined, RepeatOneOutlined, ShareOutlined, Link, PeopleAltOutlined,
-    ExpandMore} from '@material-ui/icons';
+    } from '@material-ui/icons';
 import Modal from 'react-modal'
 import {useDispatch, useSelector} from "react-redux";
 import {selectUser} from "../features/userSlice";
@@ -42,12 +42,12 @@ const Post = ({key, Id, image, question, timestamp, quoraUser}) => {
 
     useEffect(()=>
       {  if(questionId){
-            db.collection(question).doc(questionId).collection('answer').orderBy('timestamp', 'desc')
+            db.collection('questions').doc(questionId).collection('answer').orderBy('timestamp', 'desc')
             .onSnapshot((snapshot => 
                 setGetAnswer(snapshot.docs.map(doc=>
                     ({id:doc.id, answers:doc.data()})))
                 ))
-        }},[]
+        }},[questionId]
     )
 
     return (
@@ -123,6 +123,7 @@ const Post = ({key, Id, image, question, timestamp, quoraUser}) => {
                                ({id, answers})=>
                                (
                                    <p key={id} style={{position:'relative', paddingBottom: '5px'}}>
+                                       {answers.answer}
                                        {id === answers.questionId && (<span>{answers.answer}<span style={{ position: "absolute",
                                             color: "yellowgreen",
                                             fontSize: "small",
